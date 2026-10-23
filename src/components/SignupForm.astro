@@ -1,0 +1,87 @@
+---
+import { event } from '../data/event';
+
+const keuzes = ['breien', 'haken', 'allebei', 'weet ik nog niet'];
+---
+
+<form id="signup" name="aanmelding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value="aanmelding">
+  <p class="hidden"><label>Niet invullen <input name="bot-field"></label></p>
+
+  <label for="naam">Naam</label>
+  <input type="text" id="naam" name="naam" autocomplete="name" required>
+
+  <label for="email">E-mail</label>
+  <input type="email" id="email" name="email" autocomplete="email" required>
+
+  <fieldset class="chips">
+    <legend>Ik ga…</legend>
+    {keuzes.map((keuze, i) => (
+      <>
+        <input type="radio" id={`t${i + 1}`} name="wat" value={keuze} required={i === 0}>
+        <label for={`t${i + 1}`}>{keuze}</label>
+      </>
+    ))}
+  </fieldset>
+
+  <label for="opmerking">Nog iets dat we moeten weten? <small>(optioneel)</small></label>
+  <textarea id="opmerking" name="opmerking"></textarea>
+
+  <button class="btn" type="submit">Meld me aan</button>
+  <p class="privacy">We gebruiken je gegevens alleen voor deze meetup en verwijderen ze daarna.</p>
+  <p class="error hidden" id="error">Er ging iets mis. Probeer het nog eens of mail ons even.</p>
+</form>
+
+<div class="done hidden" id="done">
+  <p class="script">yay!</p>
+  <p>Je bent aangemeld. Tot {event.datum}!</p>
+</div>
+
+<script>
+  const form = document.getElementById('signup') as HTMLFormElement;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('error')!.classList.add('hidden');
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString()
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.classList.add('hidden');
+      document.getElementById('done')!.classList.remove('hidden');
+    } catch {
+      document.getElementById('error')!.classList.remove('hidden');
+    }
+  });
+</script>
+
+<style>
+  label { display: block; font-weight: 700; margin: 18px 0 6px; }
+  label small { font-weight: 400; color: var(--brown-soft); }
+  input[type=text], input[type=email], textarea {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: var(--cream);
+    border: 1.5px solid rgba(145,118,110,.5);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; }
+  .chips legend { font-weight: 700; margin: 18px 0 6px; padding: 0; }
+  .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .chips label {
+    margin: 0; font-weight: 400; cursor: pointer;
+    border: 1.5px solid var(--accent); border-radius: 999px; padding: 8px 18px;
+  }
+  .chips input:checked + label { background: var(--accent); color: var(--white); }
+  .chips input:focus-visible + label { outline: 2px solid var(--brown); outline-offset: 2px; }
+  .privacy { font-size: 14px; color: var(--brown-soft); margin-top: 12px; text-align: center; }
+  .done { text-align: center; padding: 12px 0; }
+  .done .script { margin-bottom: 8px; }
+  .error { color: #A2463A; margin-top: 12px; text-align: center; }
+</style>

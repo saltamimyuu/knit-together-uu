@@ -1,0 +1,20 @@
+---
+import { event } from '../data/event';
+---
+
+<ul class="facts">
+  <li><span>Datum</span>{event.datum}</li>
+  <li><span>Tijd</span>{event.tijd}</li>
+  <li><span>Plek</span><a href={event.mapsUrl} target="_blank" rel="noopener">{event.plek}</a></li>
+  <li><span>Kosten</span>{event.kosten}</li>
+  <li><span>Mee</span>{event.mee}</li>
+</ul>
+<p class="note">Geen les, gewoon gezellig samen breien of haken, kletsen en een kopje thee. Beginner of pro, iedereen is welkom.</p>
+
+<style>
+  .facts { list-style: none; padding: 0; display: grid; gap: 12px; }
+  .facts li { display: flex; gap: 14px; align-items: baseline; }
+  .facts span { flex: 0 0 74px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .facts a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .note { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(145,118,110,.35); color: var(--brown-soft); }
+</style>

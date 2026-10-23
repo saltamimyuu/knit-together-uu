@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Card from '../components/Card.astro';
+import EventFacts from '../components/EventFacts.astro';
+import SignupForm from '../components/SignupForm.astro';
+import { event } from '../data/event';
+---
+
+<Layout
+  title="Knit Together · Stitch & Chat"
+  description="Samen breien & haken voor UU-studenten. Do 19 nov, 15:30–17:30, De Vagant. Gratis, neem je eigen project mee."
+>
+  <Hero />
+
+  <Card title="Wanneer & waar">
+    <EventFacts />
+  </Card>
+
+  <Card title="Meld je aan" id="aanmelden">
+    <SignupForm />
+  </Card>
+
+  <Card title="Vragen?">
+    <p>Mail ons gerust, we reageren zo snel mogelijk.</p>
+    <a class="btn ghost" id="mail" href={`mailto:${event.email}?subject=Vraag%20over%20Knit%20Together`}>Stuur een mail</a>
+  </Card>
+</Layout>
