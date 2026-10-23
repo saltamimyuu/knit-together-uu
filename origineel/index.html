@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knit Together · Stitch & Chat</title>
+<meta name="description" content="Samen breien & haken voor UU-studenten. Do 19 nov, 15:30–17:30, De Vagant. Gratis, neem je eigen project mee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Carlito:wght@400;700&family=Fraunces:opsz,wght,SOFT@144,900,100&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FBF3EA;
+    --pink: #F6D0CD;
+    --accent: #91766E;
+    --brown: #5B3B2F;
+    --brown-soft: #7B5850;
+    --white: #FFFBF6;
+    --radius: 22px;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: Calibri, Carlito, "Segoe UI", sans-serif;
+    color: var(--brown);
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(circle, rgba(145,118,110,.28) 5px, transparent 5.5px),
+      radial-gradient(circle, rgba(145,118,110,.28) 5px, transparent 5.5px);
+    background-size: 48px 48px;
+    background-position: 0 0, 24px 24px;
+    line-height: 1.5;
+    font-size: 18px;
+    min-height: 100vh;
+  }
+  main { max-width: 540px; margin: 0 auto; padding: 32px 16px 48px; }
+
+  /* Hero */
+  .hero {
+    background: var(--pink);
+    border-radius: 999px 999px var(--radius) var(--radius);
+    outline: 6px solid var(--white);
+    outline-offset: -18px;
+    text-align: center;
+    padding: 72px 32px 56px;
+  }
+  .eyebrow { letter-spacing: .45em; font-size: 13px; text-transform: uppercase; color: var(--brown-soft); }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 900;
+    font-variation-settings: "SOFT" 100;
+    font-size: clamp(76px, 22vw, 112px);
+    line-height: .9;
+    letter-spacing: -.02em;
+    margin-top: 14px;
+  }
+  .script {
+    font-family: "Caveat", cursive;
+    font-size: clamp(46px, 13vw, 64px);
+    color: var(--brown-soft);
+    line-height: 1;
+    transform: rotate(-4deg);
+    margin: 4px 0 0 30px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border: 1.5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-top: 20px;
+  }
+  h2 { font-size: 24px; font-weight: 700; margin-bottom: 14px; }
+  .facts { list-style: none; padding: 0; display: grid; gap: 12px; }
+  .facts li { display: flex; gap: 14px; align-items: baseline; }
+  .facts span { flex: 0 0 74px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .facts a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .note { margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(145,118,110,.35); color: var(--brown-soft); }
+
+  /* Form */
+  label { display: block; font-weight: 700; margin: 18px 0 6px; }
+  label small { font-weight: 400; color: var(--brown-soft); }
+  input[type=text], input[type=email], textarea {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: var(--cream);
+    border: 1.5px solid rgba(145,118,110,.5);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; }
+  .chips legend { font-weight: 700; margin: 18px 0 6px; padding: 0; }
+  .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .chips label {
+    margin: 0; font-weight: 400; cursor: pointer;
+    border: 1.5px solid var(--accent); border-radius: 999px; padding: 8px 18px;
+  }
+  .chips input:checked + label { background: var(--accent); color: var(--white); }
+  .chips input:focus-visible + label { outline: 2px solid var(--brown); outline-offset: 2px; }
+  .btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 24px;
+    font: inherit; font-weight: 700; font-size: 19px;
+    color: var(--white);
+    background: var(--brown);
+    border: 0; border-radius: 999px;
+    padding: 15px 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--accent); }
+  .btn.ghost { background: transparent; color: var(--brown); border: 1.5px solid var(--brown); }
+  .btn.ghost:hover { background: var(--brown); color: var(--white); }
+  .privacy { font-size: 14px; color: var(--brown-soft); margin-top: 12px; text-align: center; }
+  .hidden { display: none; }
+  .done { text-align: center; padding: 12px 0; }
+  .done .script { margin: 0 0 8px; transform: none; }
+  .error { color: #A2463A; margin-top: 12px; text-align: center; }
+
+  footer { text-align: center; font-size: 14px; color: var(--brown-soft); margin-top: 28px; }
+</style>
+</head>
+<body>
+<main>
+
+  <header class="hero">
+    <p class="eyebrow">Stitch &amp; Chat</p>
+    <h1>Knit</h1>
+    <p class="script">together</p>
+  </header>
+
+  <section class="card">
+    <h2>Wanneer &amp; waar</h2>
+    <ul class="facts">
+      <li><span>Datum</span>donderdag 19 november</li>
+      <li><span>Tijd</span>15:30 – 17:30</li>
+      <li><span>Plek</span><a href="https://www.google.com/maps/search/?api=1&query=De+Vagant+Budapestlaan+4c+Utrecht" target="_blank" rel="noopener">De Vagant, Budapestlaan 4c</a></li>
+      <li><span>Kosten</span>gratis</li>
+      <li><span>Mee</span>je eigen brei- of haakproject</li>
+    </ul>
+    <p class="note">Geen les, gewoon gezellig samen breien of haken, kletsen en een kopje thee. Beginner of pro, iedereen is welkom.</p>
+  </section>
+
+  <section class="card" id="aanmelden">
+    <h2>Meld je aan</h2>
+    <form id="signup" name="aanmelding" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="aanmelding">
+      <p class="hidden"><label>Niet invullen <input name="bot-field"></label></p>
+
+      <label for="naam">Naam</label>
+      <input type="text" id="naam" name="naam" autocomplete="name" required>
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" autocomplete="email" required>
+
+      <fieldset class="chips">
+        <legend>Ik ga…</legend>
+        <input type="radio" id="t1" name="wat" value="breien" required><label for="t1">breien</label>
+        <input type="radio" id="t2" name="wat" value="haken"><label for="t2">haken</label>
+        <input type="radio" id="t3" name="wat" value="allebei"><label for="t3">allebei</label>
+        <input type="radio" id="t4" name="wat" value="weet ik nog niet"><label for="t4">weet ik nog niet</label>
+      </fieldset>
+
+      <label for="opmerking">Nog iets dat we moeten weten? <small>(optioneel)</small></label>
+      <textarea id="opmerking" name="opmerking"></textarea>
+
+      <button class="btn" type="submit">Meld me aan</button>
+      <p class="privacy">We gebruiken je gegevens alleen voor deze meetup en verwijderen ze daarna.</p>
+      <p class="error hidden" id="error">Er ging iets mis. Probeer het nog eens of mail ons even.</p>
+    </form>
+
+    <div class="done hidden" id="done">
+      <p class="script">yay!</p>
+      <p>Je bent aangemeld. Tot donderdag 19 november!</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Vragen?</h2>
+    <p>Mail ons gerust, we reageren zo snel mogelijk.</p>
+    <a class="btn ghost" id="mail" href="mailto:knittogether.uu@outlook.com?subject=Vraag%20over%20Knit%20Together">Stuur een mail</a>
+  </section>
+
+  <footer>Stitch &amp; Chat · Knit Together</footer>
+</main>
+
+<script>
+  const form = document.getElementById('signup');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('error').classList.add('hidden');
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      });
+      if (!res.ok) throw new Error(res.status);
+      form.classList.add('hidden');
+      document.getElementById('done').classList.remove('hidden');
+    } catch {
+      document.getElementById('error').classList.remove('hidden');
+    }
+  });
+</script>
+</body>
+</html>
