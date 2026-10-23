@@ -18,6 +18,6 @@ npm run dev
 - `src/pages/index.astro`: de pagina
 - `src/components/`: Hero, Card, EventFacts, SignupForm
 - `src/data/event.ts`: datum, tijd, plek en contactmail op één plek
-- `netlify/functions/submission-created.mjs`: stuurt de bevestigingsmail via Resend (heeft eigen kopie van de eventdetails)
+- `netlify/functions/submission-created.mjs`: stuurt de bevestigingsmail via Resend en zet de aanmelder als contact in Resend, in het segment uit `RESEND_SEGMENT_ID` (heeft eigen kopie van de eventdetails)
 
 Het formulier werkt via Netlify Forms en alleen op de gedeployde site, niet met `npm run dev`.

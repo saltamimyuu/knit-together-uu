@@ -1,15 +1,42 @@
 // Netlify roept deze function automatisch aan bij elke geverifieerde formulierinzending
 // (de bestandsnaam "submission-created" koppelt hem aan dat event).
-// Stuurt de aanmelder een bevestigingsmail via Resend.
+// Stuurt de aanmelder een bevestigingsmail via Resend en zet hem als contact in Resend.
 //
 // Nodig in Netlify → Site configuration → Environment variables:
-//   RESEND_API_KEY  bijv. re_xxxxxxxx
-//   MAIL_FROM       bijv. Knit Together <hallo@jouwdomein.nl>  (domein geverifieerd in Resend)
+//   RESEND_API_KEY     bijv. re_xxxxxxxx  (Full access: contacts toevoegen kan niet met alleen Sending access)
+//   MAIL_FROM          bijv. Knit Together <hallo@jouwdomein.nl>  (domein geverifieerd in Resend)
+//   RESEND_SEGMENT_ID  optioneel: segment waar aanmelders in komen (Resend → Audience → Segments)
+
+import { Resend } from 'resend';
 
 const REPLY_TO = 'knittogether.uu@outlook.com';
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 const escape = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+// Mislukt dit, dan loggen we het alleen: de bevestigingsmail is belangrijker.
+const voegContactToe = async (email, naam) => {
+  const segmentId = process.env.RESEND_SEGMENT_ID;
+  const [firstName = '', ...rest] = naam.trim().split(/\s+/);
+  const { error } = await resend.contacts.create({
+    email,
+    firstName,
+    lastName: rest.join(' '),
+    unsubscribed: false,
+    ...(segmentId && { segments: [{ id: segmentId }] }),
+  });
+  if (!error) return;
+
+  // Bestaat het contact al (bijv. dubbele aanmelding), zet het dan alsnog in het segment.
+  if (segmentId) {
+    const { error: segmentError } = await resend.contacts.segments.add({ email, segmentId });
+    if (!segmentError) return;
+    console.error('Resend segment error', segmentError);
+  }
+  console.error('Resend contact error', error);
+};
 
 export const handler = async (event) => {
   const { payload } = JSON.parse(event.body);
@@ -58,24 +85,20 @@ Knit Together`;
   </div>
 </body></html>`;
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  const [{ error }] = await Promise.all([
+    resend.emails.send({
       from: process.env.MAIL_FROM,
       to: [email],
-      reply_to: REPLY_TO,
+      replyTo: REPLY_TO,
       subject: 'Je bent aangemeld voor Knit Together 🧶',
       text,
       html,
     }),
-  });
+    voegContactToe(email, naam).catch((err) => console.error('Resend contact error', err)),
+  ]);
 
-  if (!res.ok) {
-    console.error('Resend error', res.status, await res.text());
+  if (error) {
+    console.error('Resend error', error);
     return { statusCode: 502 };
   }
   return { statusCode: 200 };
