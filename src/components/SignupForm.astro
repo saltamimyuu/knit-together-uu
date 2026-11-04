@@ -35,6 +35,7 @@ const keuzes = ['breien', 'haken', 'allebei', 'weet ik nog niet'];
 <div class="done hidden" id="done">
   <p class="script">yay!</p>
   <p>Je bent aangemeld. Tot {event.datum}!</p>
+  <p class="mail-note">We hebben een bevestiging gestuurd naar <strong id="done-email"></strong>. Niets ontvangen? Kijk dan even in je spam of ongewenste mail.</p>
 </div>
 
 <script>
@@ -49,6 +50,7 @@ const keuzes = ['breien', 'haken', 'allebei', 'weet ik nog niet'];
         body: new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString()
       });
       if (!res.ok) throw new Error(String(res.status));
+      document.getElementById('done-email')!.textContent = (form.elements.namedItem('email') as HTMLInputElement).value;
       form.classList.add('hidden');
       document.getElementById('done')!.classList.remove('hidden');
     } catch {
@@ -83,5 +85,6 @@ const keuzes = ['breien', 'haken', 'allebei', 'weet ik nog niet'];
   .privacy { font-size: 14px; color: var(--brown-soft); margin-top: 12px; text-align: center; }
   .done { text-align: center; padding: 12px 0; }
   .done .script { margin-bottom: 8px; }
+  .done .mail-note { font-size: 15px; color: var(--brown-soft); margin-top: 12px; overflow-wrap: anywhere; }
   .error { color: #A2463A; margin-top: 12px; text-align: center; }
 </style>
