@@ -57,7 +57,7 @@ export const handler = async (event) => {
 
 Je bent aangemeld voor Knit Together · Stitch & Chat!
 
-Datum: donderdag 19 november
+Datum: vrijdag 4 december
 Tijd: 15:30 – 17:30
 Plek: De Vagant, Budapestlaan 4c, Utrecht
 Kosten: gratis
@@ -78,7 +78,7 @@ Knit Together`;
       <h1 style="margin:0 0 16px;font-family:Georgia,serif;font-size:30px;">Je bent aangemeld!</h1>
       <p style="font-size:17px;line-height:1.5;margin:0 0 20px;">Hoi ${escape(voornaam)}, leuk dat je komt! Hier nog even de details:</p>
       <table style="font-size:17px;line-height:1.6;border-collapse:collapse;">
-        <tr><td style="color:#91766E;padding-right:16px;">Datum</td><td>donderdag 19 november</td></tr>
+        <tr><td style="color:#91766E;padding-right:16px;">Datum</td><td>vrijdag 4 december</td></tr>
         <tr><td style="color:#91766E;padding-right:16px;">Tijd</td><td>15:30 – 17:30</td></tr>
         <tr><td style="color:#91766E;padding-right:16px;">Plek</td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=De+Vagant+Budapestlaan+4c+Utrecht" style="color:#5B3B2F;">De Vagant, Budapestlaan 4c</a></td></tr>
         <tr><td style="color:#91766E;padding-right:16px;">Kosten</td><td>gratis</td></tr>
