@@ -18,24 +18,30 @@ const escape = (s = '') =>
 
 // Mislukt dit, dan loggen we het alleen: de bevestigingsmail is belangrijker.
 const voegContactToe = async (email, naam) => {
-  const segmentId = process.env.RESEND_SEGMENT_ID;
+  // Spaties of aanhalingstekens rond de waarde in Netlify maken het ID ongeldig.
+  const segmentId = (process.env.RESEND_SEGMENT_ID || '').trim().replace(/^["']|["']$/g, '');
+  if (!segmentId) console.warn('RESEND_SEGMENT_ID ontbreekt: contact komt niet in een segment');
+
   const [firstName = '', ...rest] = naam.trim().split(/\s+/);
-  const { error } = await resend.contacts.create({
-    email,
-    firstName,
-    lastName: rest.join(' '),
-    unsubscribed: false,
+  const contact = { email, firstName, lastName: rest.join(' '), unsubscribed: false };
+
+  const { data, error } = await resend.contacts.create({
+    ...contact,
     ...(segmentId && { segments: [{ id: segmentId }] }),
   });
-  if (!error) return;
+  if (!error) return console.log('Resend contact aangemaakt', data?.id, segmentId ? `in segment ${segmentId}` : 'zonder segment');
+  console.error('Resend contact error', error);
+  if (!segmentId) return;
 
   // Bestaat het contact al (bijv. dubbele aanmelding), zet het dan alsnog in het segment.
-  if (segmentId) {
-    const { error: segmentError } = await resend.contacts.segments.add({ email, segmentId });
-    if (!segmentError) return;
-    console.error('Resend segment error', segmentError);
-  }
-  console.error('Resend contact error', error);
+  const { error: segmentError } = await resend.contacts.segments.add({ email, segmentId });
+  if (!segmentError) return console.log('Resend bestaand contact aan segment toegevoegd', segmentId);
+  console.error('Resend segment error', segmentId, segmentError);
+
+  // Klopt het segment-ID niet, dan weigert Resend het hele contact. Maak het dan zonder segment aan.
+  const { data: los, error: losError } = await resend.contacts.create(contact);
+  if (!losError) return console.log('Resend contact aangemaakt zonder segment (segment-ID klopt niet?)', los?.id);
+  console.error('Resend contact error (zonder segment)', losError);
 };
 
 export const handler = async (event) => {
